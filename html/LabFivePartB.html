@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>LabFivePartB</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-11-25">
+<meta name="DC.source" content="LabFivePartB.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<pre class="codeinput">
+<span class="comment">% Read the image into Matlab</span>
+duImage = imread(<span class="string">"DUandKentMobile.jpg"</span>);
+
+<span class="comment">% Convert the image to grayscale (black and white only)</span>
+grayImage = rgb2gray(duImage);
+
+<span class="comment">% Create the x and y gradient filters to begin the</span>
+<span class="comment">% edge detection algorithm</span>
+Sx = [1 0 -1; 2 0 -2; 1 0 -1];
+Sy = [1 2 1; 0 0 0; -1 -2 -1];
+
+<span class="comment">% Convolve each of the above filters with the checkerboard image</span>
+<span class="comment">% First we must convert the image into a double by using the 'double'</span>
+<span class="comment">% command and passing it the image variable name 'myImage'</span>
+sobelXImage = conv2(double(grayImage), Sx, <span class="string">'same'</span>);
+sobelYImage = conv2(double(grayImage), Sy, <span class="string">'same'</span>);
+
+<span class="comment">% Creating the first figure</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Original Image and Gradients'</span>);
+
+<span class="comment">% Display the original image</span>
+subplot(1,3,1);
+imshow(duImage);
+title(<span class="string">'Original Image'</span>);
+
+<span class="comment">% Display the X gradient image</span>
+subplot(1,3,2);
+imshow(uint8(sobelXImage));
+title(<span class="string">'X Gradient'</span>);
+
+<span class="comment">% Display the Y gradient image</span>
+subplot(1,3,3);
+imshow(uint8(sobelYImage));
+title(<span class="string">'Y Gradient'</span>);
+
+<span class="comment">% In order to ensure that the magnitude of the gradidents is calculated and</span>
+<span class="comment">% displayed properly we will use this command below which squares both of</span>
+<span class="comment">% the gradients and takes the square root of the sum</span>
+E = sqrt(sobelXImage.^2 + sobelYImage.^2);
+
+<span class="comment">% Adding a threshold of 50 to the image to limit the number of edges that</span>
+<span class="comment">% are detected</span>
+threshold50 = 50;
+edgeDetectedImage50 = (uint8(E) &gt; threshold50) * 255;
+
+<span class="comment">% Creating the second figure</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Threshold 50'</span>);
+imshow(edgeDetectedImage50);
+
+<span class="comment">% Adding a threshold of 100 to the image to limit the number of edges that</span>
+<span class="comment">% are detected</span>
+threshold100 = 100;
+edgeDetectedImage100 = (uint8(E) &gt; threshold100) * 255;
+
+<span class="comment">% Creating the third figure</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Threshold 100'</span>);
+imshow(edgeDetectedImage100);
+
+<span class="comment">% Adding a threshold of 150 to the image to limit the number of edges that</span>
+<span class="comment">% are detected</span>
+threshold150 = 150;
+edgeDetectedImage150 = (uint8(E) &gt; threshold150) * 255;
+
+<span class="comment">% Creating the fourth figure</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Threshold 150'</span>);
+imshow(edgeDetectedImage150);
+
+<span class="comment">% Adding a threshold of 200 to the image to limit the number of edges that</span>
+<span class="comment">% are detected</span>
+threshold200 = 200;
+edgeDetectedImage200 = (uint8(E) &gt; threshold200) * 255;
+
+<span class="comment">% Creating the fifth figure</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Threshold 200'</span>);
+imshow(edgeDetectedImage200);
+</pre>
+<img vspace="5" hspace="5" src="LabFivePartB_01.png" alt=""> <img vspace="5" hspace="5" src="LabFivePartB_02.png" alt=""> <img vspace="5" hspace="5" src="LabFivePartB_03.png" alt=""> <img vspace="5" hspace="5" src="LabFivePartB_04.png" alt=""> <img vspace="5" hspace="5" src="LabFivePartB_05.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+% Read the image into Matlab
+duImage = imread("DUandKentMobile.jpg");
+
+% Convert the image to grayscale (black and white only)
+grayImage = rgb2gray(duImage);
+
+% Create the x and y gradient filters to begin the
+% edge detection algorithm
+Sx = [1 0 -1; 2 0 -2; 1 0 -1];
+Sy = [1 2 1; 0 0 0; -1 -2 -1];
+
+% Convolve each of the above filters with the checkerboard image
+% First we must convert the image into a double by using the 'double' 
+% command and passing it the image variable name 'myImage'
+sobelXImage = conv2(double(grayImage), Sx, 'same');
+sobelYImage = conv2(double(grayImage), Sy, 'same');
+
+% Creating the first figure 
+figure('Name', 'Original Image and Gradients');
+
+% Display the original image
+subplot(1,3,1);
+imshow(duImage);
+title('Original Image');
+
+% Display the X gradient image
+subplot(1,3,2);
+imshow(uint8(sobelXImage));
+title('X Gradient');
+
+% Display the Y gradient image
+subplot(1,3,3);
+imshow(uint8(sobelYImage));
+title('Y Gradient');
+
+% In order to ensure that the magnitude of the gradidents is calculated and
+% displayed properly we will use this command below which squares both of
+% the gradients and takes the square root of the sum
+E = sqrt(sobelXImage.^2 + sobelYImage.^2);
+
+% Adding a threshold of 50 to the image to limit the number of edges that
+% are detected
+threshold50 = 50;
+edgeDetectedImage50 = (uint8(E) > threshold50) * 255;
+
+% Creating the second figure 
+figure('Name', 'Threshold 50');
+imshow(edgeDetectedImage50);
+
+% Adding a threshold of 100 to the image to limit the number of edges that
+% are detected
+threshold100 = 100;
+edgeDetectedImage100 = (uint8(E) > threshold100) * 255;
+
+% Creating the third figure
+figure('Name', 'Threshold 100');
+imshow(edgeDetectedImage100);
+
+% Adding a threshold of 150 to the image to limit the number of edges that
+% are detected
+threshold150 = 150;
+edgeDetectedImage150 = (uint8(E) > threshold150) * 255;
+
+% Creating the fourth figure
+figure('Name', 'Threshold 150');
+imshow(edgeDetectedImage150);
+
+% Adding a threshold of 200 to the image to limit the number of edges that
+% are detected
+threshold200 = 200;
+edgeDetectedImage200 = (uint8(E) > threshold200) * 255;
+
+% Creating the fifth figure
+figure('Name', 'Threshold 200');
+imshow(edgeDetectedImage200);
+##### SOURCE END #####
+-->
+</body>
+</html>
